@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>混入</title>
+</head>
+<body>
+
+<script src="../resource/lib/vue.min.js"></script>
+<script>
+var mixin = {
+  created: function () {
+    console.log('mixin hook called')
+  }
+}
+new Vue({
+  mixins: [mixin],
+  created: function () {
+    console.log('component hook called')
+  }
+})
+// 
+</script>
+</body>
+</html>

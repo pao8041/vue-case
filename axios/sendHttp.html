@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../resource/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<section class="container" id="app">
+	<button type="button" class="btn btn-primary" @click="changePanel('getList')">get</button>
+	<button type="button" class="btn btn-primary" @click="changePanel('postData')">post</button>
+	<button type="button" class="btn btn-primary" @click="changePanel('deleteUser')">delete</button>
+	<button type="button" class="btn btn-primary" @click="changePanel('putUser')">put</button>
+	<div class="panel panel-default" v-if="curMethod === 'getList'">
+	  <div class="panel-body">
+	    <h3>get请求，获取列表</h3>
+		<ul>
+			<li v-for="item in list">{{item.id}} -- {{item.name}} -- {{item.birthday}}</li>
+		</ul>
+	  </div>
+	</div>
+	<div class="panel panel-default" v-if="curMethod === 'postData'">
+	  <div class="panel-body">
+	    <h3>post</h3>
+		<ul>
+			<li ></li>
+		</ul>
+	  </div>
+	</div>
+	<div class="panel panel-default" v-if="curMethod === 'deleteUser'">
+	  <div class="panel-body">
+	    <h3>delete</h3>
+		<ul>
+			<li ></li>
+		</ul>
+	  </div>
+	</div>
+	<div class="panel panel-default" v-if="curMethod === 'putUser'">
+	  <div class="panel-body">
+	    <h3>put</h3>
+		<ul>
+			<li></li>
+		</ul>
+	  </div>
+	</div>
+	
+</section>
+
+
+<script src="../resource/lib/axios.min.js"></script>
+<script src="../resource/lib/vue.min.js"></script>
+<script>
+var app = new Vue({
+	el:'#app',
+	data:{
+		curMethod:'',
+		list:[]
+	},
+	methods:{
+		changePanel(method){
+			this.curMethod = method;
+			this[method]();
+		},
+		getList(){
+			var _this = this;
+			axios.get('/list').then(function(res) {
+				console.log(res);
+				_this.list = res.data.list;
+			}).catch(function(error) {
+				console.log(error)
+			})
+		},
+		postData(){
+			axios.post('/user',{
+			    firstName:'friend',
+			    lastName:'Flintstone'
+			})
+			.then(function(response){
+			    console.log(response);
+			})
+			.catch(function(error){
+			    console.log(error);
+			});
+		},
+		deleteUser(){
+			axios.delete('/user',{
+			    firstName:'friend',
+			    lastName:'Flintstone'
+			})
+			.then(function(response){
+			    console.log(response);
+			})
+			.catch(function(error){
+			    console.log(error);
+			});
+		},
+		putUser(){
+			axios.put('/user',{
+			    firstName:'friend',
+			    lastName:'Flintstone'
+			})
+			.then(function(response){
+			    console.log(response);
+			})
+			.catch(function(error){
+			    console.log(error);
+			});
+		}
+	}
+})
+
+
+</script>
+</body>
+</html>

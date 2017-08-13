@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>使用getters</title>
+</head>
+<body>
+<section id="page">
+
+    done todos:({{doneTodosCount}})
+    <ul>
+        <li v-for="item in doneTodos">{{item.text}}</li>
+    </ul>
+    未完成：
+    <ul>
+        <li v-for="item in undoTodos">{{item.text}}</li>
+    </ul>
+</section>
+
+<script src="../resource/lib/vue.min.js"></script>
+<script src="../resource/lib/vuex.min.js"></script>
+<script>
+    const store = new Vuex.Store({
+        state: {
+            count: 0,
+            todos: [
+                {id: 1, text: '事项一', done: true},
+                {id: 2, text: '事项二', done: false}
+            ]
+        },
+        getters: {
+            doneTodos: state => {
+                return state.todos.filter(todo => todo.done)
+            },
+            undoTodos: state => {
+                return state.todos.filter(todo => !todo.done)
+            },
+            doneTodosCount: (state, getters) => {
+                return getters.doneTodos.length;
+            }
+        }
+    });
+
+    //直接调用getters
+    new Vue({
+        el: '#page',
+        store,
+        computed: {
+            doneTodos(){
+                return this.$store.getters.doneTodos;
+            },
+            undoTodos(){
+                return this.$store.getters.undoTodos;
+            },
+            doneTodosCount(){
+                return this.$store.getters.doneTodosCount;
+            }
+        }
+    });
+
+    //使用mapGetters
+    /*new Vue({
+        el: '#page',
+        store,
+        computed: Vuex.mapGetters([
+                'doneTodos',
+                'undoTodos',
+                'doneTodosCount'
+            ])
+    });*/
+</script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>mutations的使用</title>
+</head>
+<body>
+<section id="app">
+<todo></todo>
+
+</section>
+
+<script type="text/x-template" id="tmpTodo">
+<div>
+    <p><input type="text" @keyup.enter="addTodo2()" v-model="todo"></p>
+    未完成：
+    <ul>
+        <li v-for="item in undoTodos">{{item.text}} <input type="checkbox" @click="doneTodo(item.id)"></li>
+    </ul>
+    已完成:({{doneTodosCount}})
+    <ul>
+        <li v-for="item in doneTodos">{{item.text}} </li>
+    </ul>
+
+</div>
+</script>
+
+<script src="../resource/lib/vue.min.js"></script>
+<script src="../resource/lib/vuex.min.js"></script>
+<script>
+    /*在 Vuex store 中，实际改变 状态(state) 的唯一方式是通过 提交(commit) 一个 mutation。
+    Vuex 的 mutation 和事件系统非常相似：每个 mutation 都有一个字符串 类型(type) 和 一个 回调函数(handler)。
+    回调函数是我们执行实际修改状态的地方，它将接收 状态(state) 作为第一个参数。*/
+    const store = new Vuex.Store({
+        state: {
+            todos: [
+                {id: 1, text: '事项一', done: true},
+                {id: 2, text: '事项二', done: false}
+            ]
+        },
+        mutations:{
+            addTodo(state,todoText){
+                let maxId = 0;
+                state.todos.forEach(function (v,i) {
+                    if(v.id > maxId){
+                        maxId = v.id;
+                    }
+                });
+                maxId++;
+                state.todos.push({id:maxId,text:todoText,done:false});
+            },
+            addTodo2(state,payload){
+                let maxId = 0;
+                state.todos.forEach(function (v,i) {
+                    if(v.id > maxId){
+                        maxId = v.id;
+                    }
+                });
+                maxId++;
+                state.todos.push({id:maxId,text:payload.todoText,done:false});
+            },
+            doneTodo(state,id){
+                let obj = state.todos.filter(item => item.id === id)[0];
+
+                obj.done = true;
+            }
+        },
+        getters:{
+            doneTodos: state => {
+                return state.todos.filter(todo => todo.done)
+            },
+            undoTodos: state => {
+                return state.todos.filter(todo => !todo.done)
+            },
+            doneTodosCount: (state, getters) => {
+                return getters.doneTodos.length;
+            }
+        }
+    });
+
+    var Todo = Vue.extend({
+        template:'#tmpTodo',
+        data() {
+            return {
+                todo:''
+            }
+        },
+        computed:Vuex.mapGetters(['doneTodos', 'undoTodos', 'doneTodosCount']),
+        methods:{
+            addTodo(){
+                this.$store.commit('addTodo',this.todo);
+                this.todo = '';
+            },
+            addTodo2(){
+                var _this = this;
+                this.$store.commit({type:'addTodo2',todoText:_this.todo});
+                this.todo = '';
+            },
+            doneTodo(id){
+                this.$store.commit('doneTodo',id);
+            }
+        }
+    });
+
+    var app = new Vue({
+        el:'#app',
+        store,
+        components:{
+            Todo
+        }
+    });
+
+
+</script>
+</body>
+</html>

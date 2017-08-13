@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>jQuery和vue混用</title>
+	<link  href="../resource/css/datepicker.css" rel="stylesheet">
+</head>
+<body>
+<section id="page">
+<input type="text" id="iptDate"> {{dateStr}}	
+</section>
+
+
+<script src="../lib/jquery-3.1.0.min.js"></script>
+<script src="../lib/datepicker.js"></script>
+<script src="../resource/lib/vue.min.js"></script>
+<script>
+	var vm = new Vue({
+		el:'#page',
+		data:{
+			dateStr:''
+		},
+		mounted:function() {
+			var _this = this;
+			$('#iptDate').datepicker().on('pick.datepicker', function (e) {
+				// console.log(e.date,e.view);
+				var str = $('#iptDate').datepicker('getDate',true);
+				console.log(str);
+				_this.dateStr = str;
+			});
+		}
+	})
+</script>
+</body>
+</html>

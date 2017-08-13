@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>vuex模块</title>
+</head>
+<body>
+<section id="page">
+	<p>{{count}}</p>
+	<p><input type="button" @click="add()" value="+"></p>
+</section>
+
+<script src="../resource/lib/vue.min.js"></script>
+<script src="../resource/lib/vuex.min.js"></script>
+<script>
+    const moduleA = {
+        state: { count:11 },
+        mutations: {
+            add(state){
+                state.count++;
+			}
+		},
+        actions: {
+            add({commit}){
+                commit('add');
+			}
+		}
+    }
+    const moduleB = {
+        state: { count:22 },
+        mutations: {
+            reduce(state){
+                state.count--;
+            }
+        },
+        actions: {
+            reduce({commit}){
+                commit('reduce');
+            }
+        }
+    }
+    const store = new Vuex.Store({
+        state:{
+            count:0
+		},
+		modules: {
+            a: moduleA,
+            b: moduleB
+        }
+    })
+
+	var app = new Vue({
+		el:'#page',
+		store,
+		computed:{
+		    count(){
+		        return store.state.a.count;
+			}
+		},
+		methods:Vuex.mapActions(['reduce','add'])
+	})
+</script>
+</body>
+</html>

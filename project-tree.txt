@@ -1,0 +1,52 @@
+卷 软件 的文件夹 PATH 列表
+卷序列号为 0009-CB43
+D:.
+│  package.json
+│  project-tree.txt
+│  README.md
+│  tree.txt
+│  
+├─axios
+│      node-server.js
+│      
+├─resource
+│  ├─css
+│  │      bootstrap.min.css
+│  │      datepicker.css
+│  │      v-dialog.css
+│  │      
+│  └─lib
+│          axios.min.js
+│          datepicker.js
+│          jquery-3.1.0.min.js
+│          vue-router.min.js
+│          vue.min.js
+│          vuex.min.js
+│          
+├─vue
+│      0-template.html
+│      1-data-binding.html
+│      10-vue-jquery.html
+│      2-tab.html
+│      3-search.html
+│      4-calc-total.html
+│      5-component-dialog.html
+│      6-component-dialog-slot.html
+│      7-directive-focus.html
+│      8-filter.html
+│      9-mixin.html
+│      
+├─vue-router
+│      1-base.html
+│      2-params.html
+│      3-nesting.html
+│      4-program.html
+│      
+└─vuex
+        vuex1-nostore.html
+        vuex1-state.html
+        vuex2-getters.html
+        vuex3-mutations.html
+        vuex4-actions.html
+        vuex5-modules.html
+        

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>获取state</title>
+</head>
+<body>
+<section id="app">
+    <counter></counter>
+    <alertme></alertme>
+</section>
+<script type="text/x-template" id="tmpCount">
+<div>
+    <p>计数： {{count}}</p>
+    <p><input type="button" v-bind:value="btnText" @click="start()"></p>
+</div>
+</script>
+<script type="text/x-template" id="tmpAlertme">
+    <div>
+        <p v-show="isOdd">奇数</p>
+        <p v-show="!isOdd">偶数</p>
+        <p></p>
+    </div>
+</script>
+<script src="../resource/lib/vue.min.js"></script>
+<script src="../resource/lib/vuex.min.js"></script>
+<script>
+    var store = new Vuex.Store({
+        state:{
+            count:0
+        },
+        mutations:{
+            increment(state){
+                state.count++;
+            }
+        }
+    })
+
+    const Counter = Vue.extend({
+        template:'#tmpCount',
+        data:function () {
+            return {
+                timer:null,
+                btnText:'开始'
+            }
+        },
+        computed:{
+            count(){
+                return this.$store.state.count;
+            }
+        },
+        methods:{
+            start(){
+                var _this = this;
+                if(!this.timer){
+                    this.btnText = '停止';
+                    this.timer = setInterval(function () {
+                        _this.$store.commit('increment');
+                    },1000);
+                }else{
+                    this.btnText = '继续';
+                    clearInterval(this.timer);
+                    this.timer = null;
+                }
+
+            }
+        }
+    });
+
+    const Alertme = Vue.extend({
+        template:'#tmpAlertme',
+        data:function () {
+            return {};
+        },
+        mounted:function () {
+        },
+        computed:{
+            isOdd:function () {
+                return this.$store.state.count % 2 !== 0;
+            }
+        }
+    });
+
+    var app = new Vue({
+        el:'#app',
+        components:{
+            Counter,
+            Alertme
+        },
+        store:store
+    })
+
+
+</script>
+
+</body>
+</html>

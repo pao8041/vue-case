@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>自定义指令-自动聚焦指令</title>
+</head>
+<body>
+<section id="page">
+	<input type="text" v-model="msg" v-focus>
+	{{msg}}
+
+
+	<img src="logo.png" title="这是logo">
+</section>
+
+<script src="../resource/lib/vue.min.js"></script>
+<script>
+	// 注册一个全局自定义指令 v-focus
+	Vue.directive('focus', {
+	  // 当绑定元素插入到 DOM 中。
+	  inserted: function (el) {
+	    // 聚焦元素
+	    el.focus()
+	  }
+	});
+	
+	var vm = new Vue({
+		el:'#page',
+		data:{
+			msg:''
+		},
+		methods:{
+
+		},
+		beforeUpdate:function() {
+			console.log('beforeUpdate');
+		},
+		updated:function () {
+			console.log('updated');
+		}
+	});
+</script>
+</body>
+</html>
